@@ -1,9 +1,11 @@
 package br.edu.ifsul.control;
 
 import br.edu.ifsul.model.*;
+import sun.plugin2.util.AppletEnumeration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
@@ -42,6 +44,10 @@ public class Main {
         armas.add(a2);
         armas.add(a3);
 
+        personagens.addAll(n1.gerar(3,personagens.size()));
+        personagens.addAll(a1.gerar(3, personagens.size()));
+
+
         System.out.println("-----------Lista de personagens: --------------" + personagens);
 
         System.out.println("--------------Armamento VIP: ----------" +armas);
@@ -78,9 +84,9 @@ public class Main {
         System.out.println("-------------LISTA AVIÕES E NAVIOS ABATIDOS ---------------"+ personagens);
         System.out.println("------pontuação acumulada: -----"+ c);
 
-        List<Personagem> nova = personagens;
-        List<Personagem> nova2 = nova;
-        nova.sort((p1,p2)->{
+        List<Personagem> listaPontuacao = personagens;
+
+        listaPontuacao.sort((p1,p2)->{
             if(p1.getPontuacao()<p2.getPontuacao()){
                 return 1;
             }
@@ -91,18 +97,68 @@ public class Main {
                 return 0;
             }
         });
-        System.out.println("------------Lista por pontuação: -------------"+ nova);
 
-        nova.forEach(o->{
-            if(o.isAbatido() == true){
-                return ;
+        System.out.println("------------Lista por pontuação: -------------"+ listaPontuacao);
+
+        System.out.println("-----------Abatidos: ------------");
+        List<Personagem> listaAbatidos = listaPontuacao;
+
+        int size = listaAbatidos.size();
+
+        for(int i =0; i< size; i++){
+            if(listaAbatidos.get(i).isAbatido()){
+                System.out.println(listaAbatidos.get(i));
             }
-            else {
-                nova2.remove(o);
+        }
+
+        System.out.println("-----------------Lista avião, ordem pontuação decrescente--------- ");
+        List<Personagem> listaDecrescente = personagens;
+
+        listaDecrescente.sort((p1,p2)->{
+            if(p1.getPontuacao()<p2.getPontuacao()){
+                return 1;
+            }
+            if(p1.getPontuacao()>p2.getPontuacao()){
+                return -1;
+            }
+            else{
+                return 0;
             }
         });
 
-        System.out.println("-----------Abatidos: ------------"+nova);
+        listaDecrescente.forEach(personagem -> {
+            if(personagem instanceof Aviao){
+                System.out.println(personagem);
+            }
+        });
+
+        List<ArmamentoVip> listArmamentoDecrescente = armas;
+
+        listArmamentoDecrescente.sort((o1,o2)-> {
+                    if (o1 instanceof Navio || o1 instanceof Aviao && o2 instanceof Navio || o2 instanceof Aviao) {
+                        if (((Personagem) o1).getPontuacao() < ((Personagem) o2).getPontuacao()) {
+                            return 1;
+                        }
+                        if (((Personagem) o1).getPontuacao() > ((Personagem) o2).getPontuacao()) {
+                            return -1;
+                        }
+                        else{
+                            return 0;
+                        }
+                    }
+            return 0;
+        });
+
+        listArmamentoDecrescente.forEach(o->{
+            if (o.getQuantidade() > 0) {
+                if(o instanceof Navio || o instanceof  Aviao){
+                    System.out.println(o);
+                }
+            }
+        });
+
+
+
 
     }
 }
