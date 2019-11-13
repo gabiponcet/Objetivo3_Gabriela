@@ -21,17 +21,21 @@ public class Aviao extends Personagem implements ArmamentoVip{
         return quantidade;
     }
 
+    @Override
+    public String getTipo() {
+        return this.tipo;
+    }
+
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
+
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
 
 
     @Override

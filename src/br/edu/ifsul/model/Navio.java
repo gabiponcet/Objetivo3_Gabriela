@@ -25,8 +25,9 @@ public class Navio extends Personagem implements ArmamentoVip{
         this.quantidade = quantidade;
     }
 
+    @Override
     public String getTipo() {
-        return tipo;
+        return this.tipo;
     }
 
     public void setTipo(String tipo) {
